@@ -1,11 +1,11 @@
 <?php
 class Product extends CI_Model{
     public function getTblProduct() {
-        $data =$this->db->get('tbl_product')->result_array();
-        return $data;
+        return $this->db->get('tbl_product')->result_array();
     }
     public function add($data) {
         $this->db->insert('tbl_product',$data);
+        return $this->db->insert_id();
     }
     function getById($productId) {
         $this->db->where('id',$productId);
@@ -13,7 +13,7 @@ class Product extends CI_Model{
         return $product;
     }
     function update($data, $productId) {
-        $this->db->update('tbl_product', $data, array('id' => $productId));
+        return $this->db->update('tbl_product', $data, array('id' => $productId));
     }
     public function delete($productId) {
 		return $this->db->delete('tbl_product', array('id'=>$productId));

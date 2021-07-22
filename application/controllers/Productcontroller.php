@@ -24,16 +24,20 @@ class ProductController extends CI_Controller {
             'recordsTotal' => 0
         );
         echo json_encode($output);
+        exit;
     }
     public function add_product() {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
         $this->form_validation->set_rules('title_name', 'Title', 'required|min_length[6]');
         $this->form_validation->set_rules('price_name', 'Price', 'required|numeric');
         $this->form_validation->set_rules('quantity_name', 'Quantity', 'required|numeric');
            
         if($this->form_validation->run() == FALSE){
             echo validation_errors();
-        } else {
+            
+        } else{
             $insertdata = array(
                 'title' => $this->input->post('title_name'),
                 'price' => $this->input->post('price_name'),
@@ -42,19 +46,27 @@ class ProductController extends CI_Controller {
                 'updated_time' => date('Y-m-d H:i:s'),
             );
             
-            $this->Product->add($insertdata);
+            if($this->Product->add($insertdata) == 0) {
+               echo 'fail';
+              
+            };
         }
-        
+        exit;
     }
     public function getDataProduct() {
-        $productId = $this->input->post('productId');
-        
-        $product = $this->Product->getById($productId);
-        // print_r($product['id']);
-        echo json_encode($product);
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        } else {
+            $productId = $this->input->post('productId');
+            $product = $this->Product->getById($productId);
+            echo json_encode($product);
+            exit;
+        }
     }
     public function update_product() {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
         $productId = $this->input->post('product_id');
         $this->form_validation->set_rules('title_name_edit', 'Title', 'required|min_length[6]');
         $this->form_validation->set_rules('price_name_edit', 'Price', 'required|numeric');
@@ -62,6 +74,7 @@ class ProductController extends CI_Controller {
            
         if($this->form_validation->run() == FALSE){
             echo validation_errors();
+            
         } else {
             $updateData = array(
                 'title' => $this->input->post('title_name_edit'),
@@ -70,13 +83,20 @@ class ProductController extends CI_Controller {
                 'updated_time' => date('Y-m-d H:i:s'),
             );
             
-            $this->Product->update($updateData, $productId);
+            if($this->Product->update($updateData, $productId) == 0) {
+                echo 'fail';
+            };
         }
+        exit;
     }
     public function delete_product() {
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
         $productId = $this->input->post('productId');
         $product = $this->Product->delete($productId);
         echo $product;
+        exit;
     }
     
 }

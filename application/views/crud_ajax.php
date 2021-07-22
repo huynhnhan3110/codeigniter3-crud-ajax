@@ -124,7 +124,7 @@
                 contentType: false,  
                 processData: false,  
                 success: function(data) {
-                    if(data != '') {
+                    if(data == 'fail') {
                         $('#alert-msg').html('<div class="alert alert-danger">' + data + '</div>');
                     }else{
                         $('#product_model').modal('hide');  
@@ -145,7 +145,7 @@
                 contentType: false,  
                 processData: false,  
                 success: function(data) {  
-                    if(data != '') {
+                    if(data == 'fail') {
                         $('#alert-msg-edit').html('<div class="alert alert-danger">' + data + '</div>');
                     }else{
                         $('#product_edit_model').find('form')[0].reset();
